@@ -1,0 +1,40 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Pedidos360</h1>
+    <div class="user-info">
+      <span>{{ username() }}</span>
+      <button type="button" (click)="signOut()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="dashboard-content">
+    <h2>Panel de Control</h2>
+    <p>Bienvenido al sistema de gestión de pedidos.</p>
+
+    <div class="api-tests">
+      <h3>Pruebas de API</h3>
+      <div class="buttons">
+        <button 
+          type="button" 
+          (click)="testPublicApi()"
+          [disabled]="loading()">
+          Probar API Pública
+        </button>
+        <button 
+          type="button" 
+          (click)="testPrivateApi()"
+          [disabled]="loading()">
+          Probar API Privada (JWT)
+        </button>
+      </div>
+
+      @if (loading()) {
+        <p class="loading">Cargando...</p>
+      }
+
+      @if (apiResponse()) {
+        <pre class="response-box">{{ apiResponse() }}</pre>
+      }
+    </div>
+  </section>
+</div>

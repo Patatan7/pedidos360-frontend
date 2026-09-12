@@ -1,0 +1,12 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Bienvenido a Pedidos360</h2>
+    <p>Inicia sesión con tu cuenta Microsoft para continuar.</p>
+    <button 
+      type="button" 
+      (click)="signIn()" 
+      [disabled]="loading()">
+      {{ loading() ? 'Redirigiendo...' : 'Iniciar sesión con Microsoft' }}
+    </button>
+  </div>
+</div>
