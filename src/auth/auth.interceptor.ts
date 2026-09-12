@@ -2,11 +2,15 @@ import { inject } from '@angular/core'
 import { HttpInterceptorFn } from '@angular/common/http'
 import { MsalService } from '@azure/msal-angular'
 import { from, switchMap } from 'rxjs'
-import { environment } from '../environments/environment'
 import { loginRequest } from './msal.config'
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(MsalService)
+
+  // Solo adjunta token en rutas privadas
+  if (!req.url.includes('/api/')) {
+    return next(req)
+  }
 
   const account =
     authService.instance.getActiveAccount() ??
