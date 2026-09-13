@@ -44,4 +44,3 @@ __screenshots__/
 Thumbs.db
 
 # Environment con credenciales reales
-src/environments/environment.ts
