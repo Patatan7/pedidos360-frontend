@@ -14,6 +14,18 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'pedidos',
+    loadComponent: () =>
+      import('./pages/pedidos/pedidos.component').then((m) => m.PedidosComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./pages/admin/admin.component').then((m) => m.AdminComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },

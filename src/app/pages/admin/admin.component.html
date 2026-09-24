@@ -1,0 +1,69 @@
+<div class="admin-container">
+  <h2>Panel Admin — Todos los Pedidos</h2>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="loading">Cargando...</p>
+  }
+
+  @if (editando()) {
+    <div class="modal">
+      <div class="modal-card">
+        <h3>Editar Pedido #{{ editando()!.id }}</h3>
+        <label>Descripción</label>
+        <input
+          type="text"
+          [value]="editando()!.descripcion"
+          (input)="editando.update(p => p ? {...p, descripcion: $any($event.target).value} : p)"
+        />
+        <label>Estado</label>
+        <select
+          [value]="editando()!.estado"
+          (change)="editando.update(p => p ? {...p, estado: $any($event.target).value} : p)">
+          <option value="PENDIENTE">PENDIENTE</option>
+          <option value="COMPLETADO">COMPLETADO</option>
+          <option value="CANCELADO">CANCELADO</option>
+        </select>
+        <div class="modal-buttons">
+          <button type="button" (click)="guardar()">Guardar</button>
+          <button type="button" class="cancel" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!loading() && pedidos().length === 0) {
+    <p class="vacio">No hay pedidos registrados.</p>
+  }
+
+  @if (pedidos().length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of pedidos(); track p.id) {
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.descripcion }}</td>
+            <td><span class="badge {{ p.estado?.toLowerCase() }}">{{ p.estado }}</span></td>
+            <td>{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="acciones">
+              <button type="button" class="btn-edit" (click)="editar(p)">Editar</button>
+              <button type="button" class="btn-delete" (click)="eliminar(p.id!)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

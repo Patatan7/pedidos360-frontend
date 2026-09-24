@@ -1,0 +1,48 @@
+<div class="pedidos-container">
+  <h2>Mis Pedidos</h2>
+
+  <div class="form-nuevo">
+    <input
+      type="text"
+      placeholder="Descripción del pedido..."
+      [value]="nuevaDescripcion()"
+      (input)="nuevaDescripcion.set($any($event.target).value)"
+    />
+    <button type="button" (click)="crear()">Crear pedido</button>
+  </div>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="loading">Cargando...</p>
+  }
+
+  @if (!loading() && pedidos().length === 0) {
+    <p class="vacio">No tienes pedidos aún.</p>
+  }
+
+  @if (pedidos().length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of pedidos(); track p.id) {
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.descripcion }}</td>
+            <td><span class="badge {{ p.estado?.toLowerCase() }}">{{ p.estado }}</span></td>
+            <td>{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

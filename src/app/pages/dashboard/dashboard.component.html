@@ -3,37 +3,29 @@
     <h1>Pedidos360</h1>
     <div class="user-info">
       <span>{{ username() }}</span>
+      @if (isAdmin()) {
+        <span class="role-badge admin">Admin</span>
+      } @else {
+        <span class="role-badge user">User</span>
+      }
       <button type="button" (click)="signOut()">Cerrar sesión</button>
     </div>
   </header>
 
   <section class="dashboard-content">
-    <h2>Panel de Control</h2>
-    <p>Bienvenido al sistema de gestión de pedidos.</p>
+    <h2>Bienvenido, {{ username() }}</h2>
 
-    <div class="api-tests">
-      <h3>Pruebas de API</h3>
-      <div class="buttons">
-        <button 
-          type="button" 
-          (click)="testPublicApi()"
-          [disabled]="loading()">
-          Probar API Pública
-        </button>
-        <button 
-          type="button" 
-          (click)="testPrivateApi()"
-          [disabled]="loading()">
-          Probar API Privada (JWT)
-        </button>
+    <div class="cards">
+      <div class="card" (click)="irAPedidos()">
+        <h3>Mis Pedidos</h3>
+        <p>Ver y crear tus pedidos.</p>
       </div>
 
-      @if (loading()) {
-        <p class="loading">Cargando...</p>
-      }
-
-      @if (apiResponse()) {
-        <pre class="response-box">{{ apiResponse() }}</pre>
+      @if (isAdmin()) {
+        <div class="card admin-card" (click)="irAAdmin()">
+          <h3>Panel Admin</h3>
+          <p>Gestionar todos los pedidos del sistema.</p>
+        </div>
       }
     </div>
   </section>
