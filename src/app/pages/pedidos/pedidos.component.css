@@ -4,24 +4,68 @@
   padding: 0 1.25rem;
 }
 
-h2 {
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.top-bar h2 {
   color: #1a1a1a;
-  margin-bottom: 1.5rem;
+  margin: 0;
+}
+
+.btn-back {
+  padding: 0.35rem 0.8rem;
+  background: transparent;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background: #f5f5f5;
+}
+
+.banner-exito {
+  background: #D1FAE5;
+  border: 1px solid #6EE7B7;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  color: #065F46;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .form-nuevo {
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
+  align-items: flex-start;
 }
 
-.form-nuevo input {
+.input-wrap {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-wrap input {
   padding: 0.6rem 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font: inherit;
   font-size: 0.95rem;
+}
+
+.input-error {
+  font-size: 0.8rem;
+  color: #E11D48;
+  margin-top: 4px;
 }
 
 .form-nuevo button {
@@ -32,11 +76,10 @@ h2 {
   border-radius: 4px;
   font: inherit;
   cursor: pointer;
+  white-space: nowrap;
 }
 
-.form-nuevo button:hover {
-  background: #0A7A6E;
-}
+.form-nuevo button:hover { background: #0A7A6E; }
 
 table {
   width: 100%;
@@ -61,9 +104,7 @@ td {
   font-size: 0.9rem;
 }
 
-tr:last-child td {
-  border-bottom: none;
-}
+tr:last-child td { border-bottom: none; }
 
 .badge {
   padding: 0.25rem 0.6rem;
@@ -72,21 +113,24 @@ tr:last-child td {
   font-weight: 500;
 }
 
-.badge.pendiente {
+.badge.pendiente { background: #FEF3C7; color: #92400E; }
+.badge.completado { background: #D1FAE5; color: #065F46; }
+.badge.cancelado { background: #FEE2E2; color: #991B1B; }
+
+.btn-cancelar {
+  padding: 0.25rem 0.6rem;
   background: #FEF3C7;
   color: #92400E;
+  border: 1px solid #FDE68A;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
-.badge.completado {
-  background: #D1FAE5;
-  color: #065F46;
-}
+.btn-cancelar:hover { background: #FDE68A; }
 
-.badge.cancelado {
-  background: #FEE2E2;
-  color: #991B1B;
-}
-
+.text-muted { color: #aaa; font-size: 0.85rem; }
 .error { color: #E11D48; }
 .loading { color: #555; }
 .vacio { color: #888; font-style: italic; }

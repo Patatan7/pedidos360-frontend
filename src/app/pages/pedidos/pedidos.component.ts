@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { DatePipe } from '@angular/common'
+import { Router } from '@angular/router'
 import { PedidoService, Pedido } from '../../services/pedido.service'
 
 @Component({
@@ -11,11 +12,14 @@ import { PedidoService, Pedido } from '../../services/pedido.service'
 })
 export class PedidosComponent implements OnInit {
   private readonly service = inject(PedidoService)
+  private readonly router = inject(Router)
 
   readonly pedidos = signal<Pedido[]>([])
   readonly loading = signal(false)
   readonly error = signal<string | null>(null)
+  readonly exito = signal<string | null>(null)
   readonly nuevaDescripcion = signal('')
+  readonly inputError = signal<string | null>(null)
 
   ngOnInit(): void {
     this.cargar()
@@ -31,13 +35,35 @@ export class PedidosComponent implements OnInit {
 
   crear(): void {
     const desc = this.nuevaDescripcion().trim()
-    if (!desc) return
+    if (desc.length < 5) {
+      this.inputError.set('La descripcion debe tener al menos 5 caracteres.')
+      return
+    }
+    this.inputError.set(null)
     this.service.crear({ descripcion: desc }).subscribe({
       next: (p) => {
         this.pedidos.update(list => [...list, p])
         this.nuevaDescripcion.set('')
+        this.exito.set('Pedido creado exitosamente.')
+        setTimeout(() => this.exito.set(null), 3000)
       },
       error: () => this.error.set('Error al crear pedido'),
     })
+  }
+
+  cancelarPedido(id: number): void {
+    if (!confirm('¿Cancelar este pedido?')) return
+    this.service.cancelar(id).subscribe({
+      next: (actualizado) => {
+        this.pedidos.update(list => list.map(p => p.id === actualizado.id ? actualizado : p))
+        this.exito.set('Pedido cancelado.')
+        setTimeout(() => this.exito.set(null), 3000)
+      },
+      error: () => this.error.set('Error al cancelar pedido'),
+    })
+  }
+
+  volver(): void {
+    this.router.navigate(['/dashboard'])
   }
 }

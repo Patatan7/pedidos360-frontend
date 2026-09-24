@@ -35,4 +35,12 @@ export class PedidoService {
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/${id}`)
   }
+
+  obtenerPorId(id: number): Observable<Pedido> {
+    return this.http.get<Pedido>(`${this.base}/${id}`)
+  }
+
+  cancelar(id: number): Observable<Pedido> {
+    return this.http.patch<Pedido>(`${this.base}/${id}/cancelar`, {})
+  }
 }

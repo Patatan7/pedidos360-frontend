@@ -1,19 +1,32 @@
 <div class="pedidos-container">
-  <h2>Mis Pedidos</h2>
-
-  <div class="form-nuevo">
-    <input
-      type="text"
-      placeholder="Descripción del pedido..."
-      [value]="nuevaDescripcion()"
-      (input)="nuevaDescripcion.set($any($event.target).value)"
-    />
-    <button type="button" (click)="crear()">Crear pedido</button>
+  <div class="top-bar">
+    <button type="button" class="btn-back" (click)="volver()">← Dashboard</button>
+    <h2>Mis Pedidos</h2>
+    <div style="width: 120px;"></div>
   </div>
+
+  @if (exito()) {
+    <div class="banner-exito">✓ {{ exito() }}</div>
+  }
 
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
+
+  <div class="form-nuevo">
+    <div class="input-wrap">
+      <input
+        type="text"
+        placeholder="Descripcion del pedido (min. 5 caracteres)..."
+        [value]="nuevaDescripcion()"
+        (input)="nuevaDescripcion.set($any($event.target).value)"
+      />
+      @if (inputError()) {
+        <span class="input-error">{{ inputError() }}</span>
+      }
+    </div>
+    <button type="button" (click)="crear()">Crear pedido</button>
+  </div>
 
   @if (loading()) {
     <p class="loading">Cargando...</p>
@@ -31,6 +44,7 @@
           <th>Descripción</th>
           <th>Estado</th>
           <th>Fecha</th>
+          <th>Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -40,6 +54,15 @@
             <td>{{ p.descripcion }}</td>
             <td><span class="badge {{ p.estado?.toLowerCase() }}">{{ p.estado }}</span></td>
             <td>{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              @if (p.estado !== 'CANCELADO') {
+                <button type="button" class="btn-cancelar" (click)="cancelarPedido(p.id!)">
+                  Cancelar
+                </button>
+              } @else {
+                <span class="text-muted">—</span>
+              }
+            </td>
           </tr>
         }
       </tbody>

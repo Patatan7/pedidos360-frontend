@@ -1,16 +1,29 @@
 <div class="admin-container">
-  <h2>Panel Admin — Todos los Pedidos</h2>
+  <div class="top-bar">
+    <button type="button" class="btn-back" (click)="volver()">← Dashboard</button>
+    <h2>Panel Admin — Todos los Pedidos</h2>
+    <div class="filtros">
+      @for (f of ['TODOS','PENDIENTE','COMPLETADO','CANCELADO']; track f) {
+        <button type="button"
+          class="filtro-btn"
+          [class.activo]="filtro() === f"
+          (click)="setFiltro(f)">
+          {{ f }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (exito()) {
+    <div class="banner-exito">✓ {{ exito() }}</div>
+  }
 
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
 
-  @if (loading()) {
-    <p class="loading">Cargando...</p>
-  }
-
   @if (editando()) {
-    <div class="modal">
+    <div class="modal-overlay">
       <div class="modal-card">
         <h3>Editar Pedido #{{ editando()!.id }}</h3>
         <label>Descripción</label>
@@ -35,11 +48,15 @@
     </div>
   }
 
-  @if (!loading() && pedidos().length === 0) {
-    <p class="vacio">No hay pedidos registrados.</p>
+  @if (loading()) {
+    <p class="loading">Cargando...</p>
   }
 
-  @if (pedidos().length > 0) {
+  @if (!loading() && pedidosFiltrados().length === 0) {
+    <p class="vacio">No hay pedidos con el filtro seleccionado.</p>
+  }
+
+  @if (pedidosPagina().length > 0) {
     <table>
       <thead>
         <tr>
@@ -51,7 +68,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (p of pedidos(); track p.id) {
+        @for (p of pedidosPagina(); track p.id) {
           <tr>
             <td>{{ p.id }}</td>
             <td>{{ p.descripcion }}</td>
@@ -65,5 +82,13 @@
         }
       </tbody>
     </table>
+
+    <div class="paginacion">
+      <button type="button" class="pg-btn" [disabled]="paginaActual() === 1" (click)="setPagina(paginaActual() - 1)">‹</button>
+      @for (p of paginas(); track p) {
+        <button type="button" class="pg-btn" [class.activo]="paginaActual() === p" (click)="setPagina(p)">{{ p }}</button>
+      }
+      <button type="button" class="pg-btn" [disabled]="paginaActual() === totalPaginas()" (click)="setPagina(paginaActual() + 1)">›</button>
+    </div>
   }
 </div>
