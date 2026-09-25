@@ -63,7 +63,8 @@
           <th>ID</th>
           <th>Descripción</th>
           <th>Estado</th>
-          <th>Fecha</th>
+          <th>Creado</th>
+          <th>Modificado</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -74,6 +75,7 @@
             <td>{{ p.descripcion }}</td>
             <td><span class="badge {{ p.estado?.toLowerCase() }}">{{ p.estado }}</span></td>
             <td>{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ p.updatedAt ? (p.updatedAt | date:'dd/MM/yyyy HH:mm') : '—' }}</td>
             <td class="acciones">
               <button type="button" class="btn-edit" (click)="editar(p)">Editar</button>
               <button type="button" class="btn-delete" (click)="eliminar(p.id!)">Eliminar</button>

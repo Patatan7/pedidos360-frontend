@@ -9,6 +9,7 @@ export interface Pedido {
   estado?: string
   usuarioOid?: string
   fechaCreacion?: string
+  updatedAt?: string
 }
 
 @Injectable({ providedIn: 'root' })
